@@ -26,6 +26,16 @@
   (decidir se remove).
 - Próximo no roadmap: **CRUD de Análises** (aninhado no cliente).
 
+**Como retomar:**
+```bash
+git pull                  # traz o que foi commitado (commit 69954e5 = CRUD de Clientes)
+php artisan migrate       # garante o schema atualizado
+php artisan serve         # http://127.0.0.1:8000 → login com edieworm@gmail.com
+npm run dev               # assets em watch
+php artisan test          # suíte completa (33 verdes ao fim da sessão 02)
+```
+A área de Clientes fica em **/clientes** (link "Clientes" no menu superior).
+
 ---
 
 ## Sessão 01 — 2026-06-04 — Fundação do projeto
