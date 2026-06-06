@@ -5,6 +5,29 @@
 
 ---
 
+## Sessão 02 — 2026-06-05 — Repositório remoto + CRUD de Clientes
+
+**Objetivo**: publicar o projeto no GitHub e implementar o primeiro CRUD.
+
+**Feito:**
+- Repositório publicado em **https://github.com/Lordenin/Map_tool** (remote `origin`,
+  branch `main`). Confirmado que `.env`, banco SQLite e `vendor/` não vazaram.
+- **CRUD de Clientes** completo: `ClienteController` (resource), `ClienteRequest`
+  (validação), rotas `Route::resource('clientes')` sob middleware `auth`, views
+  Blade (index/create/edit/show + partial de form), `ClienteFactory` e link na navegação.
+- **Decisão de produto (com o Duilso)**: carteira de clientes é **compartilhada**
+  entre os sócios — todos veem/editam todos. `user_id` só registra quem cadastrou.
+- **Testes**: `ClienteTest` (10 testes cobrindo CRUD + visibilidade compartilhada).
+- **Limpeza**: removido `RegistrationTest` (registro público não existe) e ajustado
+  `ExampleTest` (raiz redireciona para login). Suíte: **33 testes verdes**.
+
+**Pendente para a próxima sessão:**
+- Resíduos órfãos do Breeze sem rota: `RegisteredUserController` e `auth/register.blade.php`
+  (decidir se remove).
+- Próximo no roadmap: **CRUD de Análises** (aninhado no cliente).
+
+---
+
 ## Sessão 01 — 2026-06-04 — Fundação do projeto
 
 **Objetivo**: preparar o terreno (ambiente, base Laravel, modelo de dados,
