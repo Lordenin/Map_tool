@@ -90,7 +90,7 @@ php artisan test               # roda a suíte de testes
 ## Roadmap / próximos passos
 
 - [x] CRUD de Clientes (carteira **compartilhada** entre sócios; `user_id` = auditoria)
-- [ ] CRUD de Análises (dentro do cliente)
+- [x] CRUD de Análises (aninhado no cliente; rotas *shallow*, lista no show do cliente)
 - [ ] Gestão de Pontos (estabelecimento + concorrentes) com mapa interativo
 - [ ] Busca de locais via Places Autocomplete (preenche lat/lng)
 - [ ] Recálculo automático de distâncias ao salvar pontos

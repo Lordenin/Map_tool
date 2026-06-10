@@ -31,10 +31,6 @@
                         <dd class="text-sm text-gray-900 sm:col-span-2">{{ $cliente->segmento ?: '—' }}</dd>
                     </div>
                     <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
-                        <dt class="text-sm font-medium text-gray-500">{{ __('Análises') }}</dt>
-                        <dd class="text-sm text-gray-900 sm:col-span-2">{{ $cliente->analises_count }}</dd>
-                    </div>
-                    <div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
                         <dt class="text-sm font-medium text-gray-500">{{ __('Observações') }}</dt>
                         <dd class="text-sm text-gray-900 sm:col-span-2 whitespace-pre-line">{{ $cliente->observacoes ?: '—' }}</dd>
                     </div>
@@ -54,6 +50,45 @@
                         </button>
                     </form>
                 </div>
+            </div>
+
+            <div class="mt-6 bg-white shadow-sm sm:rounded-lg">
+                <div class="flex items-center justify-between p-6 border-b border-gray-100">
+                    <h3 class="font-semibold text-lg text-gray-800">
+                        {{ __('Análises') }}
+                        <span class="text-sm font-normal text-gray-400">({{ $cliente->analises->count() }})</span>
+                    </h3>
+                    <a href="{{ route('clientes.analises.create', $cliente) }}"
+                        class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition">
+                        {{ __('Nova análise') }}
+                    </a>
+                </div>
+
+                @if ($cliente->analises->isEmpty())
+                    <div class="p-6 text-center text-gray-500">
+                        {{ __('Nenhuma análise para este cliente ainda.') }}
+                    </div>
+                @else
+                    <ul class="divide-y divide-gray-100">
+                        @foreach ($cliente->analises as $analise)
+                            <li class="flex items-center justify-between gap-4 px-6 py-4 hover:bg-gray-50">
+                                <div class="min-w-0">
+                                    <a href="{{ route('analises.show', $analise) }}" class="font-medium text-gray-900 hover:text-indigo-600">
+                                        {{ $analise->titulo }}
+                                    </a>
+                                    <div class="mt-1 flex items-center gap-3 text-xs text-gray-500">
+                                        @include('analises.partials.status-badge')
+                                        <span>{{ $analise->data_analise?->format('d/m/Y') ?? 'sem data' }}</span>
+                                        <span>{{ $analise->pontos_count }} {{ \Illuminate\Support\Str::plural('ponto', $analise->pontos_count) }}</span>
+                                    </div>
+                                </div>
+                                <a href="{{ route('analises.edit', $analise) }}" class="text-sm text-indigo-600 hover:text-indigo-900 whitespace-nowrap">
+                                    {{ __('Editar') }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
             </div>
         </div>
     </div>

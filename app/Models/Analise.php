@@ -12,6 +12,21 @@ class Analise extends Model
 {
     use HasFactory;
 
+    public const STATUS_RASCUNHO = 'rascunho';
+    public const STATUS_EM_ANDAMENTO = 'em_andamento';
+    public const STATUS_CONCLUIDA = 'concluida';
+
+    /**
+     * Status válidos e seus rótulos legíveis (fonte única para validação e exibição).
+     *
+     * @var array<string, string>
+     */
+    public const STATUSES = [
+        self::STATUS_RASCUNHO => 'Rascunho',
+        self::STATUS_EM_ANDAMENTO => 'Em andamento',
+        self::STATUS_CONCLUIDA => 'Concluída',
+    ];
+
     protected $table = 'analises';
 
     protected $fillable = [
@@ -27,6 +42,11 @@ class Analise extends Model
         return [
             'data_analise' => 'date',
         ];
+    }
+
+    public function statusLabel(): string
+    {
+        return self::STATUSES[$this->status] ?? $this->status;
     }
 
     public function cliente(): BelongsTo

@@ -5,6 +5,45 @@
 
 ---
 
+## Sessão 03 — 2026-06-09 — CRUD de Análises + limpeza de órfãos
+
+**Objetivo**: validar o projeto, fechar gaps e implementar o próximo CRUD do roadmap.
+
+**Feito:**
+- **CRUD de Análises** completo, aninhado no cliente: `AnaliseController` (resource
+  **shallow**, sem `index`), `AnaliseRequest`, `AnaliseFactory`, views Blade
+  (create/edit/show + partials `form` e `status-badge`). Rotas: `create`/`store`
+  sob `clientes/{cliente}/analises`; `show`/`edit`/`update`/`destroy` sob `analises/{analise}`.
+- **Status como fonte única**: constantes `STATUS_*` + mapa `STATUSES` no model `Analise`,
+  usados na validação (`Rule::in`) e na exibição (`statusLabel()` + badge colorido).
+- **Lista de análises embutida no show do cliente** (em vez de uma página `index`
+  redundante): `ClienteController@show` carrega `analises` com `withCount('pontos')`.
+- **Gap fechado**: `CalculadoraDistancia` (Haversine) estava **sem teste e sem ser
+  chamado**. Criada `PontoFactory` e `CalculadoraDistanciaTest` (cálculo conhecido,
+  pontos coincidentes, `recalcularAnalise` persistindo distância, e caso sem estabelecimento).
+- **Limpeza**: removidos os órfãos do Breeze `RegisteredUserController` e
+  `auth/register.blade.php` (sem rota apontando para eles).
+- **Testes**: suíte passou de **33 → 48 verdes** (126 asserções).
+
+**Pendente para a próxima sessão:**
+- Próximo no roadmap: **Gestão de Pontos** (estabelecimento + concorrentes) com mapa
+  interativo (Google Maps JS) e busca via Places Autocomplete. Ao salvar pontos,
+  disparar `CalculadoraDistancia::recalcularAnalise()` (o serviço já está testado e pronto).
+- `welcome.blade.php` (scaffolding padrão, nunca renderizado pois `/` redireciona) ainda
+  existe — referência a `route('register')` é protegida por `Route::has`, então é inofensivo.
+
+**Como retomar:**
+```bash
+git pull
+php artisan migrate
+php artisan serve         # http://127.0.0.1:8000 → login com edieworm@gmail.com
+npm run dev
+php artisan test          # 48 verdes ao fim da sessão 03
+```
+Fluxo: **/clientes → abrir um cliente → "Nova análise"** (card de Análises no show do cliente).
+
+---
+
 ## Sessão 02 — 2026-06-05 — Repositório remoto + CRUD de Clientes
 
 **Objetivo**: publicar o projeto no GitHub e implementar o primeiro CRUD.

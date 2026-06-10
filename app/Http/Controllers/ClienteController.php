@@ -37,7 +37,10 @@ class ClienteController extends Controller
 
     public function show(Cliente $cliente): View
     {
-        $cliente->load('user')->loadCount('analises');
+        $cliente->load([
+            'user',
+            'analises' => fn ($query) => $query->withCount('pontos')->latest(),
+        ]);
 
         return view('clientes.show', compact('cliente'));
     }
