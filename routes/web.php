@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnaliseController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\PontoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('clientes.analises', AnaliseController::class)
         ->shallow()
         ->except(['index']);
+
+    // Pontos (estabelecimento + concorrentes) vivem dentro da análise e são listados
+    // no seu show. Sem 'index'/'show' próprios; create/store ficam sob a análise.
+    Route::resource('analises.pontos', PontoController::class)
+        ->shallow()
+        ->except(['index', 'show']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

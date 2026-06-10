@@ -91,9 +91,10 @@ php artisan test               # roda a suíte de testes
 
 - [x] CRUD de Clientes (carteira **compartilhada** entre sócios; `user_id` = auditoria)
 - [x] CRUD de Análises (aninhado no cliente; rotas *shallow*, lista no show do cliente)
-- [ ] Gestão de Pontos (estabelecimento + concorrentes) com mapa interativo
-- [ ] Busca de locais via Places Autocomplete (preenche lat/lng)
-- [ ] Recálculo automático de distâncias ao salvar pontos
+- [x] Gestão de Pontos (1 estabelecimento + N concorrentes; coordenadas **manuais** por ora)
+- [x] Recálculo automático de distâncias ao salvar/mover/remover pontos (Haversine)
+- [ ] Mapa interativo (plotagem dos pontos) — **requer `GOOGLE_MAPS_API_KEY`**
+- [ ] Busca de locais via Places Autocomplete (preenche lat/lng) — **requer key**
 - [ ] Upload de anexos (imagens/documentos) por ponto
 - [ ] Geração do relatório PDF da análise
 - [ ] Testes de feature para cada fluxo

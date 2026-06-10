@@ -56,18 +56,19 @@ class CalculadoraDistanciaTest extends TestCase
         $this->assertGreaterThan(0, $concorrente->distancia_metros);
     }
 
-    public function test_recalcular_analise_sem_estabelecimento_nao_quebra(): void
+    public function test_recalcular_sem_estabelecimento_zera_distancia_obsoleta(): void
     {
         $analise = Analise::factory()->create();
 
+        // Concorrente com distância antiga, mas a análise não tem estabelecimento.
         $concorrente = Ponto::factory()->concorrente()->create([
             'analise_id' => $analise->id,
-            'distancia_metros' => null,
+            'distancia_metros' => 1234,
         ]);
 
         (new CalculadoraDistancia())->recalcularAnalise($analise);
 
-        // Sem ponto de referência, a distância permanece nula (sem erro).
+        // Sem ponto de referência, a distância obsoleta é zerada para null (sem erro).
         $this->assertNull($concorrente->refresh()->distancia_metros);
     }
 }

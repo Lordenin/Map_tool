@@ -5,6 +5,49 @@
 
 ---
 
+## Sessão 04 — 2026-06-09 — Gestão de Pontos + recálculo de distâncias
+
+**Objetivo**: implementar o núcleo da ferramenta — estabelecimento + concorrentes
+por análise, com cálculo de distância funcionando.
+
+**Decisão de produto (com o Duilso):** a `GOOGLE_MAPS_API_KEY` está **vazia** no `.env`.
+Optamos por **manual-first**: construir toda a Gestão de Pontos com coordenadas
+digitadas à mão (lat/lng) e distância calculada de verdade agora; o **mapa interativo
+e o Places Autocomplete entram numa próxima etapa**, quando a key existir — sem retrabalho.
+
+**Feito:**
+- **CRUD de Pontos** aninhado na Análise: `PontoController` (resource **shallow**,
+  sem `index`/`show`), `PontoRequest` (valida lat/lng com `between`), `PontoFactory`
+  com states `estabelecimento()`/`concorrente()`. Rotas: `create`/`store` sob
+  `analises/{analise}/pontos`; `edit`/`update`/`destroy` sob `pontos/{ponto}`.
+- **Regra de negócio**: cada análise tem **no máximo 1 estabelecimento** (validado no
+  store + UX esconde o botão quando já existe). O `tipo` não muda na edição.
+- **Recálculo automático** via `CalculadoraDistancia` injetado no controller, disparado
+  ao criar/editar/remover pontos. Ajuste no serviço: **sem estabelecimento, as distâncias
+  dos concorrentes são zeradas para `null`** (não exibe valor obsoleto).
+- **Tela da Análise** ganhou seções **Estabelecimento** e **Concorrentes** (tabela com
+  distância formatada). Cada ponto tem link "abrir no Google Maps" (`maps?q=lat,lng`) —
+  funciona **sem API key**.
+- **Testes**: `PontoTest` (13 testes: CRUD, estabelecimento único, recálculo ao mover,
+  zera ao remover estabelecimento, validações). Suíte: **48 → 60 verdes** (157 asserções).
+
+**Pendente para a próxima sessão (precisa da key do Google):**
+- **Mapa interativo** plotando estabelecimento + concorrentes na tela da análise.
+- **Places Autocomplete** no form de ponto para preencher nome/endereço/lat/lng.
+- Depois: upload de anexos por ponto, geração do PDF da análise, deploy OCI.
+
+**Como retomar:**
+```bash
+git pull
+php artisan migrate
+php artisan serve         # http://127.0.0.1:8000 → login com edieworm@gmail.com
+php artisan test          # 60 verdes ao fim da sessão 04
+```
+Fluxo: **/clientes → cliente → Nova análise → abrir a análise → Definir estabelecimento
+e Adicionar concorrente** (coordenadas no formato "lat, lng" do Google Maps).
+
+---
+
 ## Sessão 03 — 2026-06-09 — CRUD de Análises + limpeza de órfãos
 
 **Objetivo**: validar o projeto, fechar gaps e implementar o próximo CRUD do roadmap.

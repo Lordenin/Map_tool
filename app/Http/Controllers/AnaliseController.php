@@ -29,7 +29,7 @@ class AnaliseController extends Controller
 
     public function show(Analise $analise): View
     {
-        $analise->load('cliente')->loadCount('pontos');
+        $analise->load(['cliente', 'estabelecimento', 'concorrentes']);
 
         return view('analises.show', compact('analise'));
     }

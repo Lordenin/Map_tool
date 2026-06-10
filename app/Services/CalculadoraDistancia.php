@@ -36,17 +36,16 @@ class CalculadoraDistancia
     /**
      * Recalcula e persiste a distância de cada concorrente até o estabelecimento
      * da análise. Chamado ao criar/editar pontos ou mover o estabelecimento.
+     *
+     * Sem estabelecimento de referência, a distância de cada concorrente é
+     * zerada para `null` — evita exibir um valor obsoleto após remover o ponto base.
      */
     public function recalcularAnalise(Analise $analise): void
     {
         $estabelecimento = $analise->estabelecimento()->first();
 
-        if ($estabelecimento === null) {
-            return;
-        }
-
         $analise->concorrentes()->each(function (Ponto $concorrente) use ($estabelecimento) {
-            $distancia = $this->haversine(
+            $distancia = $estabelecimento === null ? null : $this->haversine(
                 $estabelecimento->latitude,
                 $estabelecimento->longitude,
                 $concorrente->latitude,
